@@ -40,6 +40,10 @@ class Generic extends BaseRequest
      */
     protected function validateParams(): void
     {
+        if($this->method == 'POST') {
+            $this->payload['token'] = $this->api->getToken();
+        }
+
         if (empty($this->endpoint)) {
             throw WrongData::invalidValuesProvided('Please provide endpoint!');
         }
