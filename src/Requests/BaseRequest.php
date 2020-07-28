@@ -64,6 +64,9 @@ abstract class BaseRequest
 
     protected function validateParams()
     {
+        if($this->method == 'POST')
+            $this->payload['token'] = $this->api->getToken();
+
         return true;
     }
 }

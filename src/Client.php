@@ -19,13 +19,20 @@ class Client implements IEXCloud
     private $client = null;
 
     /**
+     * @var String|null
+     */
+    private $secretKey = null;
+
+    /**
      * Client constructor.
      *
+     * @param  string  $secretKey
      * @param  Guzzle  $client
      */
-    public function __construct(Guzzle $client)
+    public function __construct(Guzzle $client, string $secretKey)
     {
-        $this->client = $client;
+        $this->secretKey = $secretKey;
+        $this->client    = $client;
     }
 
     /**
@@ -56,12 +63,15 @@ class Client implements IEXCloud
      * @return array
      */
     private function mergeQuery(RequestInterface $request) {
-        $currentQueryArray = Arr::get($this->client->getConfig(), 'query');
         $newQueryArray = [];
         if($query = $request->getUri()->getQuery()) {
             parse_str($query, $newQueryArray);
         }
 
-        return array_merge($currentQueryArray, $newQueryArray);
+        return array_merge(['token' => $this->getToken()], $newQueryArray);
+    }
+
+    public function getToken() {
+        return $this->secretKey;
     }
 }

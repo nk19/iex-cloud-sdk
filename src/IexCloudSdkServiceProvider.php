@@ -39,10 +39,9 @@ class IexCloudSdkServiceProvider extends ServiceProvider
                     'Accept' => 'application/json',
                     'Content-Type' => 'application/json'
                 ],
-                'query' => ['token' => $config['secret_key']]
             ]);
 
-            return new \Digitonic\IexCloudSdk\Client($guzzle);
+            return new \Digitonic\IexCloudSdk\Client($guzzle, $config['secret_key']);
         });
     }
 
